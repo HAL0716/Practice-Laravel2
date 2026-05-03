@@ -11,6 +11,8 @@ Route::get('/', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'index'])
         ->name('profile');
+    Route::patch('/profile', [ProfileController::class, 'update'])
+        ->name('profile');
 });
 
 require __DIR__.'/auth.php';
