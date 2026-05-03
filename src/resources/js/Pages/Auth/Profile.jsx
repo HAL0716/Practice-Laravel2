@@ -1,6 +1,7 @@
 import { useForm, router } from '@inertiajs/react';
 import InputField from './components/InputField';
 import AuthCard from './components/AuthCard';
+import { useState } from 'react';
 
 export default function Profile({ user }) {
     const { data, setData, patch, processing, errors } = useForm({
@@ -10,9 +11,18 @@ export default function Profile({ user }) {
         password_confirmation: '',
     });
 
+    const [message, setMessage] = useState(null);
+
     const submit = (e) => {
         e.preventDefault();
-        patch('/profile');
+        patch('/profile', {
+            onSuccess: () => {
+                setMessage('アップデートが成功しました。');
+                setTimeout(() => {
+                    setMessage(null);
+                }, 2000);
+            },
+        });
     };
 
     const logout = () => {
@@ -23,6 +33,10 @@ export default function Profile({ user }) {
 
     return (
         <AuthCard title='Profile'>
+            {message && (
+                <div className='mb-4 rounded-lg bg-green-100 p-4 text-green-700'>{message}</div>
+            )}
+
             <form onSubmit={submit} className='flex flex-col gap-4'>
                 <InputField
                     label='Name'
