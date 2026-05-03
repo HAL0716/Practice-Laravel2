@@ -1,4 +1,6 @@
 import { useForm, router } from '@inertiajs/react';
+import InputField from './components/InputField';
+import AuthCard from './components/AuthCard';
 
 export default function Profile({ user }) {
     const { data, setData, patch, processing, errors } = useForm({
@@ -18,41 +20,54 @@ export default function Profile({ user }) {
     };
 
     return (
-        <div>
+        <AuthCard title='Profile'>
             <form onSubmit={submit} className='flex flex-col gap-4'>
-                <input
+                <InputField
+                    label='Name'
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
-                    placeholder='Name'
+                    error={errors.name}
                 />
-                {errors.name && <div>{errors.name}</div>}
 
-                <input
+                <InputField
+                    label='Email'
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
-                    placeholder='Email'
+                    error={errors.email}
                 />
-                {errors.email && <div>{errors.email}</div>}
 
-                <input
+                <InputField
+                    label='New Password'
                     type='password'
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
-                    placeholder='Password'
+                    error={errors.password}
                 />
-                {errors.password && <div>{errors.password}</div>}
 
-                <input
+                <InputField
+                    label='Confirm Password'
                     type='password'
                     value={data.password_confirmation}
                     onChange={(e) => setData('password_confirmation', e.target.value)}
-                    placeholder='Confirm Password'
+                    error={errors.password}
                 />
 
-                <button disabled={processing}>Update</button>
+                <button
+                    disabled={processing}
+                    className='rounded-lg bg-blue-500 py-2 text-white transition hover:bg-blue-600 disabled:opacity-50'
+                >
+                    Update
+                </button>
             </form>
 
-            <button onClick={logout}>Logout</button>
-        </div>
+            <div className='mt-6 border-t pt-4'>
+                <button
+                    onClick={logout}
+                    className='w-full rounded-lg bg-red-500 py-2 text-white transition hover:bg-red-600'
+                >
+                    Log out
+                </button>
+            </div>
+        </AuthCard>
     );
 }

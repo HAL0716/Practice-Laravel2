@@ -1,4 +1,6 @@
 import { useForm } from '@inertiajs/react';
+import InputField from './components/InputField';
+import AuthCard from './components/AuthCard';
 
 export default function Register() {
     const { data, setData, post, processing, errors } = useForm({
@@ -14,50 +16,50 @@ export default function Register() {
     };
 
     return (
-        <form onSubmit={submit} className='flex flex-col gap-4'>
-            <div>
-                <input
+        <AuthCard title='Register' link={{ href: '/login', label: 'Log in' }}>
+            <form onSubmit={submit} className='flex flex-col gap-4'>
+                <InputField
+                    label='Name'
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
-                    placeholder='Name'
+                    error={errors.name}
+                    autoComplete='name'
                 />
-                {errors.name && <div className='text-red-500'>{errors.name}</div>}
-            </div>
 
-            <div>
-                <input
+                <InputField
+                    label='Email'
+                    type='email'
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
-                    placeholder='Email'
+                    error={errors.email}
+                    autoComplete='email'
                 />
-                {errors.email && <div className='text-red-500'>{errors.email}</div>}
-            </div>
 
-            <div>
-                <input
+                <InputField
+                    label='Password'
                     type='password'
                     value={data.password}
                     onChange={(e) => setData('password', e.target.value)}
-                    placeholder='Password'
+                    error={errors.password}
+                    autoComplete='new-password'
                 />
-                {errors.password && <div className='text-red-500'>{errors.password}</div>}
-            </div>
 
-            <div>
-                <input
+                <InputField
+                    label='Confirm Password'
                     type='password'
                     value={data.password_confirmation}
                     onChange={(e) => setData('password_confirmation', e.target.value)}
-                    placeholder='Confirm Password'
+                    error={errors.password}
+                    autoComplete='new-password'
                 />
-                {errors.password_confirmation && (
-                    <div className='text-red-500'>{errors.password_confirmation}</div>
-                )}
-            </div>
 
-            <button disabled={processing} className='border'>
-                Register
-            </button>
-        </form>
+                <button
+                    disabled={processing}
+                    className='rounded-lg bg-green-500 py-2 text-white transition hover:bg-green-600 disabled:opacity-50'
+                >
+                    Register
+                </button>
+            </form>
+        </AuthCard>
     );
 }

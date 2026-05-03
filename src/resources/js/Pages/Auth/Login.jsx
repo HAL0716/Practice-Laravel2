@@ -1,4 +1,6 @@
 import { useForm } from '@inertiajs/react';
+import InputField from './components/InputField';
+import AuthCard from './components/AuthCard';
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({
@@ -12,31 +14,37 @@ export default function Login() {
     };
 
     return (
-        <div>
-            {errors.status && <div style={{ color: 'red' }}>{errors.status}</div>}
+        <AuthCard title='Login' link={{ href: '/register', label: 'Register' }}>
+            {errors.status && (
+                <div className='mb-4 text-center text-sm text-red-500'>{errors.status}</div>
+            )}
 
             <form onSubmit={submit} className='flex flex-col gap-4'>
-                <div>
-                    <input
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        placeholder='Email'
-                    />
-                    {errors.email && <div className='text-red-500'>{errors.email}</div>}
-                </div>
+                <InputField
+                    label='Email'
+                    type='email'
+                    value={data.email}
+                    onChange={(e) => setData('email', e.target.value)}
+                    error={errors.email}
+                    autoComplete='email'
+                />
 
-                <div>
-                    <input
-                        type='password'
-                        value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        placeholder='Password'
-                    />
-                    {errors.password && <div className='text-red-500'>{errors.password}</div>}
-                </div>
+                <InputField
+                    label='Password'
+                    type='password'
+                    value={data.password}
+                    onChange={(e) => setData('password', e.target.value)}
+                    error={errors.password}
+                    autoComplete='current-password'
+                />
 
-                <button className='border'>Login</button>
+                <button
+                    disabled={processing}
+                    className='rounded-lg bg-blue-500 py-2 text-white transition hover:bg-blue-600 disabled:opacity-50'
+                >
+                    Login
+                </button>
             </form>
-        </div>
+        </AuthCard>
     );
 }
