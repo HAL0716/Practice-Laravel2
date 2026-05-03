@@ -16,7 +16,9 @@ export default function Profile({ user }) {
     };
 
     const logout = () => {
-        router.post('/logout');
+        if (confirm('ログアウトしますか？')) {
+            router.post('/logout');
+        }
     };
 
     return (
