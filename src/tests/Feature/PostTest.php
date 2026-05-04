@@ -26,11 +26,12 @@ class PostTest extends TestCase
 
         $this
             ->actingAs($user)
+            ->from(route('posts'))
             ->post(route('posts.store'), [
                 'body' => 'This is a test post.',
             ])
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
+            ->assertRedirect(route('posts'));
 
         $this->assertDatabaseHas('posts', [
             'body' => 'This is a test post.',
@@ -47,11 +48,12 @@ class PostTest extends TestCase
 
         $this
             ->actingAs($user)
+            ->from(route('posts'))
             ->patch(route('posts.update', $post), [
                 'body' => 'This is an updated test post.',
             ])
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
+            ->assertRedirect(route('posts'));
 
         $this->assertDatabaseHas('posts', [
             'id' => $post->id,
@@ -70,6 +72,7 @@ class PostTest extends TestCase
 
         $this
             ->actingAs($otherUser)
+            ->from(route('posts'))
             ->patch(route('posts.update', $post), [
                 'body' => 'This is an updated test post.',
             ])
@@ -90,9 +93,10 @@ class PostTest extends TestCase
 
         $this
             ->actingAs($user)
+            ->from(route('posts'))
             ->delete(route('posts.destroy', $post))
             ->assertSessionHasNoErrors()
-            ->assertRedirect('/');
+            ->assertRedirect(route('posts'));
 
         $this->assertDatabaseMissing('posts', [
             'id' => $post->id,
@@ -110,6 +114,7 @@ class PostTest extends TestCase
 
         $this
             ->actingAs($otherUser)
+            ->from(route('posts'))
             ->delete(route('posts.destroy', $post))
             ->assertStatus(403);
 
