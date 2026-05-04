@@ -6,7 +6,6 @@ use App\Http\Requests\Post\StoreRequest;
 use App\Models\Post;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 
@@ -14,11 +13,10 @@ class PostController extends Controller
 {
     use AuthorizesRequests;
 
-    public function index(Request $request): Response
+    public function index(): Response
     {
         return Inertia::render('Posts/Index', [
-            'posts' => Post::with('user')->latest()->get(),
-            'user' => $request->user(),
+            'posts' => Post::with('user')->latest()->get()
         ]);
     }
 
