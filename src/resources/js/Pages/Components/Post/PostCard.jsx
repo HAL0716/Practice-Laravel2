@@ -22,7 +22,10 @@ export default function PostCard({
             {mode === 'view' && (
                 <>
                     <p>{post.body}</p>
-                    <small>{formatDate(post.updated_at)} {post.created_at !== post.updated_at && `編集済み`}</small>
+                    <small>
+                        {formatDate(post.updated_at)}{' '}
+                        {post.created_at !== post.updated_at && `編集済み`}
+                    </small>
 
                     {isOwner && (
                         <div className='flex gap-2'>
