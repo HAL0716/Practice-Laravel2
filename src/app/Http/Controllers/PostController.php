@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\Post\StoreRequest;
+use App\Http\Requests\Post\UpdateRequest;
 use App\Models\Post;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Http\RedirectResponse;
@@ -25,6 +26,19 @@ class PostController extends Controller
         $validated = $request->validated();
 
         Post::create([
+            'body' => $validated['body'],
+        ]);
+
+        return back();
+    }
+
+    public function update(UpdateRequest $request, Post $post): RedirectResponse
+    {
+        $this->authorize('update', $post);
+
+        $validated = $request->validated();
+
+        $post->update([
             'body' => $validated['body'],
         ]);
 
