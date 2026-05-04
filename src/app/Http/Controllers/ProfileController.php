@@ -14,7 +14,7 @@ class ProfileController extends Controller
 {
     public function index() : Response
     {
-        return Inertia::render('Auth/Profile');
+        return Inertia::render('Profile/Index');
     }
 
     public function update(UpdateRequest $request)

@@ -1,12 +1,11 @@
 import { useForm } from '@inertiajs/react';
 import { useEffect, useState, useRef } from 'react';
-
 import Button from '../Components/UI/Button';
 import InputField from '../Components/UI/InputField';
-import Modal from '../Components/UI/Modal';
 import Toast from '../Components/UI/Toast';
+import Modal from '../Components/UI/Modal';
 
-export default function Profile({ auth }) {
+export default function Index({ auth }) {
     const initialRef = useRef({
         name: auth.user?.name,
         email: auth.user?.email,
@@ -131,7 +130,7 @@ export default function Profile({ auth }) {
                 />
 
                 {/* 更新 */}
-                <Button variant='primary' className='w-full' disabled={processing || !isDirty}>
+                <Button type='submit' variant='primary' className='w-full' disabled={processing || !isDirty}>
                     Update
                 </Button>
             </form>
