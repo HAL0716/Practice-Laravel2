@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Post;
 
-use Illuminate\Contracts\Validation\ValidationRule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateRequest extends FormRequest
@@ -15,7 +14,7 @@ class UpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'body' => ['required', 'string', 'max:255'],
+            'body' => ['required', 'string', 'max:500'],
         ];
     }
 
@@ -24,7 +23,7 @@ class UpdateRequest extends FormRequest
         return [
             'body.required' => '本文を入力してください。',
             'body.string' => '本文は文字列でなければなりません。',
-            'body.max' => '本文は255文字を超えてはいけません。',
+            'body.max' => '本文は500文字を超えてはいけません。',
         ];
     }
 }
