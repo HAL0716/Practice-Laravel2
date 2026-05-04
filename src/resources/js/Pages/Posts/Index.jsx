@@ -1,6 +1,6 @@
-import { useForm } from '@inertiajs/react';
+import { router, useForm } from '@inertiajs/react';
 
-export default function Index({ posts }) {
+export default function Index({ posts, user }) {
     const { data, setData, post, processing, reset } = useForm({
         body: '',
     });
@@ -11,6 +11,12 @@ export default function Index({ posts }) {
             onSuccess: () => reset(),
         });
     };
+
+    const destroy = (id) => {
+        if (confirm('削除しますか？')) {
+            router.delete(`/posts/${id}`);
+        }
+    }
 
     return (
         <div className='flex flex-col gap-4'>
@@ -42,6 +48,10 @@ export default function Index({ posts }) {
                             <small>{post.user ? post.user.name : '削除済みユーザー'}</small>
                             <p>{post.body}</p>
                             <small>{post.created_at}</small>
+
+                            {post.user_id === user.id && (
+                                <button onClick={() => destroy(post.id)}>削除</button>
+                            )}
                         </div>
                     ))}
                 </div>
