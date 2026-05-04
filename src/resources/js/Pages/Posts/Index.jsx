@@ -45,11 +45,6 @@ export default function Index({ posts, auth }) {
         }
     };
 
-    const formatDate = (date) =>
-        new Date(date).toLocaleString('ja-JP', {
-            timeZone: 'Asia/Tokyo',
-        });
-
     return (
         <div className='flex flex-col gap-4'>
             <h1>掲示板</h1>
