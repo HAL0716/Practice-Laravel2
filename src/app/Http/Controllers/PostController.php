@@ -26,6 +26,7 @@ class PostController extends Controller
         $validated = $request->validated();
 
         Post::create([
+            'user_id' => $request->user()->id,
             'body' => $validated['body'],
         ]);
 

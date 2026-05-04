@@ -17,13 +17,4 @@ class Post extends Model
     {
         return $this->belongsTo(User::class);
     }
-
-    protected static function booted(): void
-    {
-        static::creating(function (Post $post) {
-            if (Auth::check()) {
-                $post->user_id = Auth::id();
-            }
-        });
-    }
 }
