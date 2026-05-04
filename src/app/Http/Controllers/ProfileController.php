@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\DeleteRequest;
 use App\Http\Requests\Auth\UpdateRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Inertia\Inertia;
@@ -13,11 +12,9 @@ use Inertia\Response;
 
 class ProfileController extends Controller
 {
-    public function index(Request $request) : Response
+    public function index() : Response
     {
-        return Inertia::render('Auth/Profile', [
-            'user' => $request->user(),
-        ]);
+        return Inertia::render('Auth/Profile');
     }
 
     public function update(UpdateRequest $request)

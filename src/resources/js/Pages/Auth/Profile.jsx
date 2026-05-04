@@ -1,18 +1,18 @@
 import { useForm, router } from '@inertiajs/react';
-import InputField from './components/InputField';
-import AuthCard from './components/AuthCard';
-import Modal from './components/Modal';
 import { useEffect, useState, useRef } from 'react';
+import AuthCard from '../Components/Auth/AuthCard';
+import InputField from '../Components/UI/InputField';
+import Modal from '../Components/UI/Modal';
 
-export default function Profile({ user }) {
+export default function Profile({ auth }) {
     const initialRef = useRef({
-        name: user.name,
-        email: user.email,
+        name: auth.user?.name,
+        email: auth.user?.email,
     });
 
     const { data, setData, patch, processing, errors, reset } = useForm({
-        name: user.name,
-        email: user.email,
+        name: auth.user?.name,
+        email: auth.user?.email,
         password: '',
         password_confirmation: '',
     });
