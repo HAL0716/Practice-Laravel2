@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import InputField from '../Components/UI/InputField';
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({
@@ -27,49 +28,26 @@ export default function Login() {
             {/* フォーム */}
             <form onSubmit={submit} className='space-y-5'>
                 {/* Email */}
-                <div>
-                    <label htmlFor='email' className='mb-1 block text-sm font-medium text-gray-700'>
-                        Email
-                    </label>
-                    <input
-                        id='email'
-                        type='email'
-                        value={data.email}
-                        onChange={(e) => setData('email', e.target.value)}
-                        autoComplete='email'
-                        className={`w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition outline-none ${
-                            errors.email
-                                ? 'border-red-500 focus:ring-2 focus:ring-red-200'
-                                : 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                        }`}
-                    />
-                    {errors.email && <p className='mt-1 text-xs text-red-500'>{errors.email}</p>}
-                </div>
+                <InputField
+                    id='email'
+                    label='Email'
+                    type='email'
+                    value={data.email}
+                    onChange={(e) => setData('email', e.target.value)}
+                    error={errors.email}
+                    autoComplete='email'
+                />
 
                 {/* Password */}
-                <div>
-                    <label
-                        htmlFor='password'
-                        className='mb-1 block text-sm font-medium text-gray-700'
-                    >
-                        Password
-                    </label>
-                    <input
-                        id='password'
-                        type='password'
-                        value={data.password}
-                        onChange={(e) => setData('password', e.target.value)}
-                        autoComplete='current-password'
-                        className={`w-full rounded-lg border px-3 py-2 text-sm shadow-sm transition outline-none ${
-                            errors.password
-                                ? 'border-red-500 focus:ring-2 focus:ring-red-200'
-                                : 'border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200'
-                        }`}
-                    />
-                    {errors.password && (
-                        <p className='mt-1 text-xs text-red-500'>{errors.password}</p>
-                    )}
-                </div>
+                <InputField
+                    id='password'
+                    label='Password'
+                    type='password'
+                    value={data.password}
+                    onChange={(e) => setData('password', e.target.value)}
+                    error={errors.password}
+                    autoComplete='current-password'
+                />
 
                 {/* ボタン */}
                 <button
