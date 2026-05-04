@@ -44,6 +44,11 @@ export default function Index({ posts, auth }) {
         }
     };
 
+    const formatDate = (date) =>
+        new Date(date).toLocaleString('ja-JP', {
+            timeZone: 'Asia/Tokyo',
+        });
+
     return (
         <div className='flex flex-col gap-4'>
             <h1>掲示板</h1>
@@ -100,7 +105,7 @@ export default function Index({ posts, auth }) {
                             ) : (
                                 <>
                                     <p>{post.body}</p>
-                                    <small>{post.created_at}</small>
+                                    <small>{formatDate(post.created_at)}</small>
 
                                     {auth.user && post.user_id === auth.user.id && (
                                         <>
