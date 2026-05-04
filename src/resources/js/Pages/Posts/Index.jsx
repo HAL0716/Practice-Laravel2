@@ -1,6 +1,6 @@
 import { router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import PostCard from '../Components/Post/PosyCard';
+import PostCard from '../Components/Post/PostCard';
 
 export default function Index({ posts, auth }) {
     const createForm = useForm({
