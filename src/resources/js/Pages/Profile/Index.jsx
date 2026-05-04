@@ -130,7 +130,12 @@ export default function Index({ auth }) {
                 />
 
                 {/* 更新 */}
-                <Button type='submit' variant='primary' className='w-full' disabled={processing || !isDirty}>
+                <Button
+                    type='submit'
+                    variant='primary'
+                    className='w-full'
+                    disabled={processing || !isDirty}
+                >
                     Update
                 </Button>
             </form>

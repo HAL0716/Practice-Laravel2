@@ -42,7 +42,7 @@ export default function Login() {
                 onChange={(e) => setData('password', e.target.value)}
                 error={errors.password}
                 autoComplete='current-password'
-                />
+            />
         </AuthForm>
     );
 }
