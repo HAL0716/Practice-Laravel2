@@ -1,5 +1,6 @@
 import { router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import PostForm from '../Components/Post/PostForm';
 
 export default function Index({ posts, auth }) {
     const createForm = useForm({
@@ -45,25 +46,19 @@ export default function Index({ posts, auth }) {
 
     return (
         <div className='space-y-6'>
+            {/* 新規投稿 */}
             <div className='space-y-4'>
                 <h2 className='font-semibold'>新規投稿</h2>
 
-                {/* 投稿フォーム */}
-                <form onSubmit={submit} className='space-y-3 rounded-lg border p-4'>
-                    <textarea
+                <div className='rounded-lg border p-4'>
+                    <PostForm
                         value={createForm.data.body}
-                        onChange={(e) => createForm.setData('body', e.target.value)}
-                        placeholder='投稿内容'
-                        className='w-full rounded border p-2 text-sm'
+                        onChange={(val) => createForm.setData('body', val)}
+                        onSubmit={submit}
+                        processing={createForm.processing}
+                        mode='create'
                     />
-
-                    <button
-                        disabled={createForm.processing}
-                        className='rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50'
-                    >
-                        投稿
-                    </button>
-                </form>
+                </div>
             </div>
 
             <hr />
@@ -79,25 +74,25 @@ export default function Index({ posts, auth }) {
 
                     return (
                         <div key={post.id} className='space-y-3 rounded-lg border p-4'>
-                            {/* ユーザー名 */}
-                            <small className='text-gray-500'>
-                                {post.user ? post.user.name : '削除済みユーザー'}
-                            </small>
-
-                            {/* 表示 or 編集 */}
                             {!isEditing ? (
                                 <>
-                                    <p className='text-gray-800'>{post.body}</p>
+                                    <div className='flex gap-2'>
+                                        <small className='text-gray-500'>
+                                            {post.user ? post.user.name : '削除済みユーザー'}
+                                        </small>
+                                        <small className='text-gray-400'>
+                                            {new Date(post.updated_at).toLocaleString('ja-JP', {
+                                                timeZone: 'Asia/Tokyo',
+                                            })}
 
-                                    <small className='text-gray-400'>
-                                        {new Date(post.updated_at).toLocaleString('ja-JP', {
-                                            timeZone: 'Asia/Tokyo',
-                                        })}{' '}
-                                        {post.created_at !== post.updated_at && '（編集済み）'}
-                                    </small>
+                                            {post.created_at !== post.updated_at && '（編集済み）'}
+                                        </small>
+                                    </div>
+
+                                    <p>{post.body}</p>
 
                                     {isOwner && (
-                                        <div className='flex gap-2 pt-2'>
+                                        <div className='flex gap-2'>
                                             <button
                                                 onClick={() => startEdit(post)}
                                                 className='text-blue-500 hover:underline'
@@ -115,31 +110,14 @@ export default function Index({ posts, auth }) {
                                     )}
                                 </>
                             ) : (
-                                /* 編集フォーム */
-                                <form onSubmit={(e) => update(e, post.id)} className='space-y-2'>
-                                    <textarea
-                                        value={editForm.data.body}
-                                        onChange={(e) => editForm.setData('body', e.target.value)}
-                                        className='w-full rounded border p-2 text-sm'
-                                    />
-
-                                    <div className='flex gap-2'>
-                                        <button
-                                            disabled={editForm.processing}
-                                            className='rounded bg-green-500 px-3 py-1 text-white'
-                                        >
-                                            更新
-                                        </button>
-
-                                        <button
-                                            type='button'
-                                            onClick={cancelEdit}
-                                            className='rounded border px-3 py-1'
-                                        >
-                                            キャンセル
-                                        </button>
-                                    </div>
-                                </form>
+                                <PostForm
+                                    value={editForm.data.body}
+                                    onChange={(val) => editForm.setData('body', val)}
+                                    onSubmit={(e) => update(e, post.id)}
+                                    processing={editForm.processing}
+                                    mode='edit'
+                                    onCancel={cancelEdit}
+                                />
                             )}
                         </div>
                     );
