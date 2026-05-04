@@ -1,6 +1,6 @@
 import { useForm } from '@inertiajs/react';
-import InputField from './components/InputField';
-import AuthCard from './components/AuthCard';
+import AuthCard from '../Components/Auth/AuthCard';
+import InputField from '../Components/UI/InputField';
 
 export default function Login() {
     const { data, setData, post, processing, errors } = useForm({

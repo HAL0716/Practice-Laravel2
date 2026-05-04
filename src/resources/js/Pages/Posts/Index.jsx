@@ -1,5 +1,6 @@
 import { router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import PostCard from '../Components/Post/PosyCard';
 
 export default function Index({ posts, auth }) {
     const createForm = useForm({
@@ -55,68 +56,38 @@ export default function Index({ posts, auth }) {
 
             <hr />
 
-            <div>
-                <h2>新規投稿</h2>
-                <form onSubmit={submit} className='flex flex-col gap-4'>
-                    <textarea
-                        value={createForm.data.body}
-                        onChange={(e) => createForm.setData('body', e.target.value)}
-                        placeholder='投稿内容'
-                    />
-                    <button type='submit' disabled={createForm.processing}>
-                        投稿
-                    </button>
-
-                    {createForm.errors.body && (
-                        <div className='text-red-500'>{createForm.errors.body}</div>
-                    )}
-                </form>
-            </div>
+            <PostCard
+                mode='create'
+                data={createForm.data}
+                setData={createForm.setData}
+                onSubmit={submit}
+                processing={createForm.processing}
+            />
 
             <hr />
 
             <div>
                 <h2>投稿一覧</h2>
                 <div className='flex flex-col gap-4'>
-                    {posts.map((post) => (
-                        <div key={post.id}>
-                            <small>{post.user ? post.user.name : '削除済みユーザー'}</small>
+                    {posts.map((post) => {
+                        const isOwner = auth.user && post.user_id === auth.user.id;
 
-                            {editingId === post.id ? (
-                                <form
-                                    onSubmit={(e) => update(e, post.id)}
-                                    className='flex flex-col gap-4'
-                                >
-                                    <textarea
-                                        value={editForm.data.body}
-                                        onChange={(e) => editForm.setData('body', e.target.value)}
-                                    />
-                                    <button type='submit' disabled={editForm.processing}>
-                                        更新
-                                    </button>
-                                    <button type='button' onClick={cancelEdit}>
-                                        キャンセル
-                                    </button>
-
-                                    {editForm.errors.body && (
-                                        <div className='text-red-500'>{editForm.errors.body}</div>
-                                    )}
-                                </form>
-                            ) : (
-                                <>
-                                    <p>{post.body}</p>
-                                    <small>{formatDate(post.created_at)}</small>
-
-                                    {auth.user && post.user_id === auth.user.id && (
-                                        <>
-                                            <button onClick={() => startEdit(post)}>編集</button>
-                                            <button onClick={() => destroy(post.id)}>削除</button>
-                                        </>
-                                    )}
-                                </>
-                            )}
-                        </div>
-                    ))}
+                        return (
+                            <PostCard
+                                key={post.id}
+                                mode={editingId === post.id ? 'edit' : 'view'}
+                                post={post}
+                                data={editForm.data}
+                                setData={editForm.setData}
+                                processing={editForm.processing}
+                                isOwner={isOwner}
+                                onSubmit={(e) => update(e, post.id)}
+                                onEdit={() => startEdit(post)}
+                                onDelete={() => destroy(post.id)}
+                                onCancel={cancelEdit}
+                            />
+                        );
+                    })}
                 </div>
             </div>
         </div>
