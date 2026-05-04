@@ -12,6 +12,7 @@ export default function Button({
         primary: 'rounded-lg px-4 py-2 text-white bg-blue-500 hover:bg-blue-600',
         danger: 'rounded-lg px-4 py-2 text-white bg-red-600 hover:bg-red-700 disabled:bg-red-400',
         gray: 'rounded-lg px-4 py-2 text-white bg-gray-700 hover:bg-gray-800',
+        secondary: 'rounded-lg px-4 py-2 text-gray-800 bg-gray-200 hover:bg-gray-300',
         text: 'text-blue-500 hover:underline p-0 bg-transparent rounded-none',
     };
 
