@@ -1,5 +1,6 @@
 import { router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
+import Button from '../Components/UI/Button';
 import PostForm from '../Components/Post/PostForm';
 
 export default function Index({ posts, auth }) {
@@ -93,19 +94,17 @@ export default function Index({ posts, auth }) {
 
                                     {isOwner && (
                                         <div className='flex gap-2'>
-                                            <button
-                                                onClick={() => startEdit(post)}
-                                                className='text-blue-500 hover:underline'
-                                            >
+                                            <Button onClick={() => startEdit(post)} variant='text'>
                                                 編集
-                                            </button>
+                                            </Button>
 
-                                            <button
+                                            <Button
                                                 onClick={() => destroy(post.id)}
                                                 className='text-red-500 hover:underline'
+                                                variant='text'
                                             >
                                                 削除
-                                            </button>
+                                            </Button>
                                         </div>
                                     )}
                                 </>

@@ -1,3 +1,5 @@
+import Button from '../UI/Button';
+
 export default function PostForm({
     value,
     onChange,
@@ -17,21 +19,14 @@ export default function PostForm({
             />
 
             <div className='flex gap-2'>
-                <button
-                    disabled={processing}
-                    className={`rounded px-4 py-2 text-white transition disabled:opacity-50 ${
-                        isCreate
-                            ? 'bg-blue-500 hover:bg-blue-600'
-                            : 'bg-green-500 hover:bg-green-600'
-                    } `}
-                >
+                <Button type='submit' disabled={processing}>
                     {isCreate ? '投稿' : '更新'}
-                </button>
+                </Button>
 
                 {onCancel && (
-                    <button type='button' onClick={onCancel} className='rounded border px-3 py-2'>
+                    <Button onClick={onCancel} variant='secondary'>
                         キャンセル
-                    </button>
+                    </Button>
                 )}
             </div>
         </form>

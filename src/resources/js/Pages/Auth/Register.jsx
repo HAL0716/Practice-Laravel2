@@ -1,4 +1,5 @@
 import { useForm } from '@inertiajs/react';
+import Button from '../Components/UI/Button';
 import InputField from '../Components/UI/InputField';
 import Toast from '../Components/UI/Toast';
 
@@ -71,12 +72,9 @@ export default function Register() {
                 />
 
                 {/* ボタン */}
-                <button
-                    disabled={processing}
-                    className='w-full rounded-lg bg-green-500 py-2 font-medium text-white transition hover:bg-green-600 disabled:cursor-not-allowed disabled:opacity-50'
-                >
+                <Button type='submit' className='w-full' disabled={processing}>
                     Register
-                </button>
+                </Button>
             </form>
         </div>
     );

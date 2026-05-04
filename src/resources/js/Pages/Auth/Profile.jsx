@@ -1,5 +1,7 @@
 import { useForm } from '@inertiajs/react';
 import { useEffect, useState, useRef } from 'react';
+
+import Button from '../Components/UI/Button';
 import InputField from '../Components/UI/InputField';
 import Modal from '../Components/UI/Modal';
 import Toast from '../Components/UI/Toast';
@@ -129,22 +131,16 @@ export default function Profile({ auth }) {
                 />
 
                 {/* 更新 */}
-                <button
-                    disabled={processing || !isDirty}
-                    className='w-full rounded-lg bg-blue-500 py-2 font-medium text-white transition hover:bg-blue-600 disabled:opacity-50'
-                >
+                <Button variant='primary' className='w-full' disabled={processing || !isDirty}>
                     Update
-                </button>
+                </Button>
             </form>
 
             {/* アクション */}
             <div className='mt-6 border-t pt-4'>
-                <button
-                    onClick={() => setDeleteOpen(true)}
-                    className='w-full rounded-lg bg-red-600 py-2 text-white hover:bg-red-700'
-                >
+                <Button onClick={() => setDeleteOpen(true)} variant='danger' className='w-full'>
                     アカウント削除
-                </button>
+                </Button>
             </div>
 
             {/* 削除モーダル */}
@@ -169,20 +165,17 @@ export default function Profile({ auth }) {
                     )}
 
                     <div className='flex justify-end gap-2'>
-                        <button
+                        <Button
                             type='button'
                             onClick={() => setDeleteOpen(false)}
-                            className='rounded-lg border px-4 py-2'
+                            variant='secondary'
                         >
                             キャンセル
-                        </button>
+                        </Button>
 
-                        <button
-                            disabled={deleting}
-                            className='rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700'
-                        >
+                        <Button type='submit' variant='danger' disabled={deleting}>
                             削除
-                        </button>
+                        </Button>
                     </div>
                 </form>
             </Modal>
