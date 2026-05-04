@@ -1,11 +1,16 @@
 import { router, useForm } from '@inertiajs/react';
 import { useState } from 'react';
-import PostCard from '../Components/Post/PostCard';
 
 export default function Index({ posts, auth }) {
     const createForm = useForm({
         body: '',
     });
+
+    const editForm = useForm({
+        body: '',
+    });
+
+    const [editingId, setEditingId] = useState(null);
 
     const submit = (e) => {
         e.preventDefault();
@@ -13,12 +18,6 @@ export default function Index({ posts, auth }) {
             onSuccess: () => createForm.reset(),
         });
     };
-
-    const editForm = useForm({
-        body: '',
-    });
-
-    const [editingId, setEditingId] = useState(null);
 
     const startEdit = (post) => {
         setEditingId(post.id);
@@ -32,10 +31,9 @@ export default function Index({ posts, auth }) {
 
     const update = (e, id) => {
         e.preventDefault();
+
         editForm.patch(`/posts/${id}`, {
-            onSuccess: () => {
-                cancelEdit();
-            },
+            onSuccess: () => cancelEdit(),
         });
     };
 
@@ -46,44 +44,106 @@ export default function Index({ posts, auth }) {
     };
 
     return (
-        <div className='flex flex-col gap-4'>
-            <h1>掲示板</h1>
+        <div className='space-y-6'>
+            <div className='space-y-4'>
+                <h2 className='font-semibold'>新規投稿</h2>
+
+                {/* 投稿フォーム */}
+                <form onSubmit={submit} className='space-y-3 rounded-lg border p-4'>
+                    <textarea
+                        value={createForm.data.body}
+                        onChange={(e) => createForm.setData('body', e.target.value)}
+                        placeholder='投稿内容'
+                        className='w-full rounded border p-2 text-sm'
+                    />
+
+                    <button
+                        disabled={createForm.processing}
+                        className='rounded bg-blue-500 px-4 py-2 text-white disabled:opacity-50'
+                    >
+                        投稿
+                    </button>
+                </form>
+            </div>
 
             <hr />
 
-            <PostCard
-                mode='create'
-                data={createForm.data}
-                setData={createForm.setData}
-                onSubmit={submit}
-                processing={createForm.processing}
-            />
+            {/* 投稿一覧 */}
+            <div className='space-y-4'>
+                <h2 className='font-semibold'>投稿一覧</h2>
 
-            <hr />
+                {posts.map((post) => {
+                    const isOwner = auth.user && post.user_id === auth.user.id;
 
-            <div>
-                <h2>投稿一覧</h2>
-                <div className='flex flex-col gap-4'>
-                    {posts.map((post) => {
-                        const isOwner = auth.user && post.user_id === auth.user.id;
+                    const isEditing = editingId === post.id;
 
-                        return (
-                            <PostCard
-                                key={post.id}
-                                mode={editingId === post.id ? 'edit' : 'view'}
-                                post={post}
-                                data={editForm.data}
-                                setData={editForm.setData}
-                                processing={editForm.processing}
-                                isOwner={isOwner}
-                                onSubmit={(e) => update(e, post.id)}
-                                onEdit={() => startEdit(post)}
-                                onDelete={() => destroy(post.id)}
-                                onCancel={cancelEdit}
-                            />
-                        );
-                    })}
-                </div>
+                    return (
+                        <div key={post.id} className='space-y-3 rounded-lg border p-4'>
+                            {/* ユーザー名 */}
+                            <small className='text-gray-500'>
+                                {post.user ? post.user.name : '削除済みユーザー'}
+                            </small>
+
+                            {/* 表示 or 編集 */}
+                            {!isEditing ? (
+                                <>
+                                    <p className='text-gray-800'>{post.body}</p>
+
+                                    <small className='text-gray-400'>
+                                        {new Date(post.updated_at).toLocaleString('ja-JP', {
+                                            timeZone: 'Asia/Tokyo',
+                                        })}{' '}
+                                        {post.created_at !== post.updated_at && '（編集済み）'}
+                                    </small>
+
+                                    {isOwner && (
+                                        <div className='flex gap-2 pt-2'>
+                                            <button
+                                                onClick={() => startEdit(post)}
+                                                className='text-blue-500 hover:underline'
+                                            >
+                                                編集
+                                            </button>
+
+                                            <button
+                                                onClick={() => destroy(post.id)}
+                                                className='text-red-500 hover:underline'
+                                            >
+                                                削除
+                                            </button>
+                                        </div>
+                                    )}
+                                </>
+                            ) : (
+                                /* 編集フォーム */
+                                <form onSubmit={(e) => update(e, post.id)} className='space-y-2'>
+                                    <textarea
+                                        value={editForm.data.body}
+                                        onChange={(e) => editForm.setData('body', e.target.value)}
+                                        className='w-full rounded border p-2 text-sm'
+                                    />
+
+                                    <div className='flex gap-2'>
+                                        <button
+                                            disabled={editForm.processing}
+                                            className='rounded bg-green-500 px-3 py-1 text-white'
+                                        >
+                                            更新
+                                        </button>
+
+                                        <button
+                                            type='button'
+                                            onClick={cancelEdit}
+                                            className='rounded border px-3 py-1'
+                                        >
+                                            キャンセル
+                                        </button>
+                                    </div>
+                                </form>
+                            )}
+                        </div>
+                    );
+                })}
             </div>
         </div>
     );
