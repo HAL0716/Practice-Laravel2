@@ -1,5 +1,6 @@
 import { useForm } from '@inertiajs/react';
 import InputField from '../Components/UI/InputField';
+import Toast from '../Components/UI/Toast';
 
 export default function Register() {
     const { data, setData, post, processing, errors } = useForm({
@@ -21,11 +22,7 @@ export default function Register() {
             <h1 className='mb-8 text-center text-3xl font-bold text-gray-800'>Register</h1>
 
             {/* エラー */}
-            {errors.status && (
-                <div className='mb-4 rounded-md bg-red-50 p-3 text-center text-sm text-red-600'>
-                    {errors.status}
-                </div>
-            )}
+            {errors.status && <Toast type='error'>{errors.status}</Toast>}
 
             {/* フォーム */}
             <form onSubmit={submit} className='space-y-5'>

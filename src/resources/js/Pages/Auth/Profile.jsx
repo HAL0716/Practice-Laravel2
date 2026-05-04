@@ -2,6 +2,7 @@ import { useForm } from '@inertiajs/react';
 import { useEffect, useState, useRef } from 'react';
 import InputField from '../Components/UI/InputField';
 import Modal from '../Components/UI/Modal';
+import Toast from '../Components/UI/Toast';
 
 export default function Profile({ auth }) {
     const initialRef = useRef({
@@ -79,11 +80,7 @@ export default function Profile({ auth }) {
             <h1 className='mb-8 text-center text-3xl font-bold text-gray-800'>Profile</h1>
 
             {/* 成功メッセージ */}
-            {message && (
-                <div className='mb-4 rounded-lg bg-green-100 p-3 text-center text-sm text-green-700'>
-                    {message}
-                </div>
-            )}
+            {message && <Toast type='success'>{message}</Toast>}
 
             {/* フォーム */}
             <form onSubmit={submit} className='space-y-5'>
