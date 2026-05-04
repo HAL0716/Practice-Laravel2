@@ -16,7 +16,7 @@ class UpdateRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'email', 'max:255'],
-            'password' => ['nullable', 'min:8', 'confirmed'],
+            'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ];
     }
 
@@ -29,6 +29,7 @@ class UpdateRequest extends FormRequest
             'email.required' => 'メールアドレスを入力してください。',
             'email.email' => '有効なメールアドレスを入力してください。',
             'email.max' => 'メールアドレスは255文字を超えてはいけません。',
+            'password.string' => 'パスワードは文字列でなければなりません。',
             'password.min' => 'パスワードは8文字以上である必要があります。',
             'password.confirmed' => 'パスワードの確認が一致しません。',
         ];
