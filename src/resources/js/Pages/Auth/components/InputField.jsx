@@ -1,4 +1,5 @@
 export default function InputField({
+    id = 'undefined',
     label,
     type = 'text',
     value,
@@ -9,9 +10,14 @@ export default function InputField({
 }) {
     return (
         <div className='flex flex-col gap-1'>
-            {label && <label className='text-sm text-gray-600'>{label}</label>}
+            {label && (
+                <label htmlFor={id} className='text-sm text-gray-600'>
+                    {label}
+                </label>
+            )}
 
             <input
+                id={id}
                 type={type}
                 value={value}
                 onChange={onChange}

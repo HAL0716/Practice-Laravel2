@@ -19,6 +19,7 @@ export default function Register() {
         <AuthCard title='Register' link={{ href: '/login', label: 'Log in' }}>
             <form onSubmit={submit} className='flex flex-col gap-4'>
                 <InputField
+                    id='Name'
                     label='Name'
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
@@ -27,6 +28,7 @@ export default function Register() {
                 />
 
                 <InputField
+                    id='Email'
                     label='Email'
                     type='email'
                     value={data.email}
@@ -36,6 +38,7 @@ export default function Register() {
                 />
 
                 <InputField
+                    id='Password'
                     label='Password'
                     type='password'
                     value={data.password}
@@ -45,6 +48,7 @@ export default function Register() {
                 />
 
                 <InputField
+                    id='ConfirmPassword'
                     label='Confirm Password'
                     type='password'
                     value={data.password_confirmation}

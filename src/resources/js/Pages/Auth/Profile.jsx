@@ -87,6 +87,7 @@ export default function Profile({ user }) {
 
             <form onSubmit={submit} className='flex flex-col gap-4'>
                 <InputField
+                    id='Name'
                     label='Name'
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
@@ -95,6 +96,7 @@ export default function Profile({ user }) {
                 />
 
                 <InputField
+                    id='Email'
                     label='Email'
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
@@ -103,6 +105,7 @@ export default function Profile({ user }) {
                 />
 
                 <InputField
+                    id='NewPassword'
                     label='New Password'
                     type='password'
                     value={data.password}
@@ -112,6 +115,7 @@ export default function Profile({ user }) {
                 />
 
                 <InputField
+                    id='ConfirmPassword'
                     label='Confirm Password'
                     type='password'
                     value={data.password_confirmation}
@@ -151,6 +155,7 @@ export default function Profile({ user }) {
 
                 <form onSubmit={submitDelete} className='flex flex-col gap-3'>
                     <InputField
+                        id='DeletePassword'
                         label='Password'
                         type='password'
                         value={deleteData.password}

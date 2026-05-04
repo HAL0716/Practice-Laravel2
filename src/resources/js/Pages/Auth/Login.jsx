@@ -21,6 +21,7 @@ export default function Login() {
 
             <form onSubmit={submit} className='flex flex-col gap-4'>
                 <InputField
+                    id='email'
                     label='Email'
                     type='email'
                     value={data.email}
@@ -30,6 +31,7 @@ export default function Login() {
                 />
 
                 <InputField
+                    id='password'
                     label='Password'
                     type='password'
                     value={data.password}
