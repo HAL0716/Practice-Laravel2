@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import AuthCard from '../Components/Auth/AuthCard';
+import AuthForm from '../Components/Auth/AuthForm';
 import InputField from '../Components/UI/InputField';
 
 export default function Register() {
@@ -12,58 +12,61 @@ export default function Register() {
 
     const submit = (e) => {
         e.preventDefault();
+
         post('/register');
     };
 
     return (
-        <AuthCard title='Register' link={{ href: '/login', label: 'Log in' }}>
-            <form onSubmit={submit} className='flex flex-col gap-4'>
-                <InputField
-                    id='Name'
-                    label='Name'
-                    value={data.name}
-                    onChange={(e) => setData('name', e.target.value)}
-                    error={errors.name}
-                    autoComplete='name'
-                />
+        <AuthForm
+            title='Register'
+            onSubmit={submit}
+            processing={processing}
+            buttonLabel='Register'
+            error={errors.status}
+        >
+            {/* Name */}
+            <InputField
+                id='name'
+                label='Name'
+                type='text'
+                value={data.name}
+                onChange={(e) => setData('name', e.target.value)}
+                error={errors.name}
+                autoComplete='name'
+            />
 
-                <InputField
-                    id='Email'
-                    label='Email'
-                    type='email'
-                    value={data.email}
-                    onChange={(e) => setData('email', e.target.value)}
-                    error={errors.email}
-                    autoComplete='email'
-                />
+            {/* Email */}
+            <InputField
+                id='email'
+                label='Email'
+                type='email'
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                error={errors.email}
+                autoComplete='email'
+            />
 
-                <InputField
-                    id='Password'
-                    label='Password'
-                    type='password'
-                    value={data.password}
-                    onChange={(e) => setData('password', e.target.value)}
-                    error={errors.password}
-                    autoComplete='new-password'
-                />
+            {/* Password */}
+            <InputField
+                id='password'
+                label='Password'
+                type='password'
+                value={data.password}
+                onChange={(e) => setData('password', e.target.value)}
+                error={errors.password}
+                autoComplete='new-password'
+            />
 
-                <InputField
-                    id='ConfirmPassword'
-                    label='Confirm Password'
-                    type='password'
-                    value={data.password_confirmation}
-                    onChange={(e) => setData('password_confirmation', e.target.value)}
-                    error={errors.password}
-                    autoComplete='new-password'
-                />
-
-                <button
-                    disabled={processing}
-                    className='rounded-lg bg-green-500 py-2 text-white transition hover:bg-green-600 disabled:opacity-50'
-                >
-                    Register
-                </button>
-            </form>
-        </AuthCard>
+            {/* Confirm Password */}
+            <InputField
+                id='password_confirmation'
+                label='Confirm Password'
+                type='password'
+                value={data.password_confirmation}
+                onChange={(e) => setData('password_confirmation', e.target.value)}
+                error={errors.password_confirmation}
+                autoComplete='new-password'
+            />
+        </AuthForm>
     );
 }

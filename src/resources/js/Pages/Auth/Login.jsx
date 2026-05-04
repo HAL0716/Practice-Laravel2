@@ -1,5 +1,5 @@
 import { useForm } from '@inertiajs/react';
-import AuthCard from '../Components/Auth/AuthCard';
+import AuthForm from '../Components/Auth/AuthForm';
 import InputField from '../Components/UI/InputField';
 
 export default function Login() {
@@ -10,43 +10,39 @@ export default function Login() {
 
     const submit = (e) => {
         e.preventDefault();
+
         post('/login');
     };
 
     return (
-        <AuthCard title='Login' link={{ href: '/register', label: 'Register' }}>
-            {errors.status && (
-                <div className='mb-4 text-center text-sm text-red-500'>{errors.status}</div>
-            )}
+        <AuthForm
+            title='Login'
+            onSubmit={submit}
+            processing={processing}
+            buttonLabel='Login'
+            error={errors.status}
+        >
+            {/* Email */}
+            <InputField
+                id='email'
+                label='Email'
+                type='email'
+                value={data.email}
+                onChange={(e) => setData('email', e.target.value)}
+                error={errors.email}
+                autoComplete='email'
+            />
 
-            <form onSubmit={submit} className='flex flex-col gap-4'>
-                <InputField
-                    id='email'
-                    label='Email'
-                    type='email'
-                    value={data.email}
-                    onChange={(e) => setData('email', e.target.value)}
-                    error={errors.email}
-                    autoComplete='email'
-                />
-
-                <InputField
-                    id='password'
-                    label='Password'
-                    type='password'
-                    value={data.password}
-                    onChange={(e) => setData('password', e.target.value)}
-                    error={errors.password}
-                    autoComplete='current-password'
-                />
-
-                <button
-                    disabled={processing}
-                    className='rounded-lg bg-blue-500 py-2 text-white transition hover:bg-blue-600 disabled:opacity-50'
-                >
-                    Login
-                </button>
-            </form>
-        </AuthCard>
+            {/* Password */}
+            <InputField
+                id='password'
+                label='Password'
+                type='password'
+                value={data.password}
+                onChange={(e) => setData('password', e.target.value)}
+                error={errors.password}
+                autoComplete='current-password'
+            />
+        </AuthForm>
     );
 }

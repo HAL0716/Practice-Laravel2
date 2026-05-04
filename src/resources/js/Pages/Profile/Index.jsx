@@ -1,10 +1,11 @@
-import { useForm, router } from '@inertiajs/react';
+import { useForm } from '@inertiajs/react';
 import { useEffect, useState, useRef } from 'react';
-import AuthCard from '../Components/Auth/AuthCard';
+import Button from '../Components/UI/Button';
 import InputField from '../Components/UI/InputField';
+import Toast from '../Components/UI/Toast';
 import Modal from '../Components/UI/Modal';
 
-export default function Profile({ auth }) {
+export default function Index({ auth }) {
     const initialRef = useRef({
         name: auth.user?.name,
         email: auth.user?.email,
@@ -20,6 +21,19 @@ export default function Profile({ auth }) {
     const [isDirty, setIsDirty] = useState(false);
     const [message, setMessage] = useState(null);
 
+    // 削除モーダル
+    const [deleteOpen, setDeleteOpen] = useState(false);
+    const {
+        data: deleteData,
+        setData: setDeleteData,
+        delete: destroy,
+        processing: deleting,
+        errors: deleteErrors,
+        reset: resetDelete,
+    } = useForm({
+        password: '',
+    });
+
     useEffect(() => {
         const changed =
             data.name !== initialRef.current.name ||
@@ -32,6 +46,7 @@ export default function Profile({ auth }) {
 
     const submit = (e) => {
         e.preventDefault();
+
         patch('/profile', {
             onSuccess: () => {
                 setMessage('アップデートが成功しました。');
@@ -49,25 +64,6 @@ export default function Profile({ auth }) {
         });
     };
 
-    const logout = () => {
-        if (confirm('ログアウトしますか？')) {
-            router.post('/logout');
-        }
-    };
-
-    const [deleteOpen, setDeleteOpen] = useState(false);
-
-    const {
-        data: deleteData,
-        setData: setDeleteData,
-        delete: destroy,
-        processing: deleting,
-        errors: deleteErrors,
-        reset: resetDelete,
-    } = useForm({
-        password: '',
-    });
-
     const submitDelete = (e) => {
         e.preventDefault();
 
@@ -80,32 +76,40 @@ export default function Profile({ auth }) {
     };
 
     return (
-        <AuthCard title='Profile'>
-            {message && (
-                <div className='mb-4 rounded-lg bg-green-100 p-4 text-green-700'>{message}</div>
-            )}
+        <div className='w-full max-w-md'>
+            {/* タイトル */}
+            <h1 className='mb-8 text-center text-3xl font-bold text-gray-800'>Profile</h1>
 
-            <form onSubmit={submit} className='flex flex-col gap-4'>
+            {/* 成功メッセージ */}
+            {message && <Toast type='success'>{message}</Toast>}
+
+            {/* フォーム */}
+            <form onSubmit={submit} className='space-y-5'>
+                {/* Name */}
                 <InputField
-                    id='Name'
+                    id='name'
                     label='Name'
+                    type='text'
                     value={data.name}
                     onChange={(e) => setData('name', e.target.value)}
                     error={errors.name}
                     autoComplete='name'
                 />
 
+                {/* Email */}
                 <InputField
-                    id='Email'
+                    id='email'
                     label='Email'
+                    type='email'
                     value={data.email}
                     onChange={(e) => setData('email', e.target.value)}
                     error={errors.email}
                     autoComplete='email'
                 />
 
+                {/* Password */}
                 <InputField
-                    id='NewPassword'
+                    id='password'
                     label='New Password'
                     type='password'
                     value={data.password}
@@ -114,48 +118,44 @@ export default function Profile({ auth }) {
                     autoComplete='new-password'
                 />
 
+                {/* Confirm */}
                 <InputField
-                    id='ConfirmPassword'
-                    label='Confirm Password'
+                    id='password_confirmation'
+                    label='Confirm New Password'
                     type='password'
                     value={data.password_confirmation}
                     onChange={(e) => setData('password_confirmation', e.target.value)}
-                    error={errors.password}
+                    error={errors.password_confirmation}
                     autoComplete='new-password'
                 />
 
-                <button
+                {/* 更新 */}
+                <Button
+                    type='submit'
+                    variant='primary'
+                    className='w-full'
                     disabled={processing || !isDirty}
-                    className='rounded-lg bg-blue-500 py-2 text-white transition hover:bg-blue-600 disabled:opacity-50'
                 >
                     Update
-                </button>
+                </Button>
             </form>
 
-            <div className='mt-6 flex gap-3 border-t pt-4'>
-                <button
-                    onClick={logout}
-                    className='w-full rounded-lg bg-gray-700 py-2 text-white hover:bg-gray-800'
-                >
-                    Log out
-                </button>
-
-                <button
-                    onClick={() => setDeleteOpen(true)}
-                    className='w-full rounded-lg bg-red-600 py-2 text-white hover:bg-red-700'
-                >
+            {/* アクション */}
+            <div className='mt-6 border-t pt-4'>
+                <Button onClick={() => setDeleteOpen(true)} variant='danger' className='w-full'>
                     アカウント削除
-                </button>
+                </Button>
             </div>
 
+            {/* 削除モーダル */}
             <Modal open={deleteOpen} onClose={() => setDeleteOpen(false)} title='アカウント削除'>
                 <p className='mb-4 text-sm text-gray-600'>
                     この操作は取り消せません。パスワードを入力してください。
                 </p>
 
-                <form onSubmit={submitDelete} className='flex flex-col gap-3'>
+                <form onSubmit={submitDelete} className='space-y-4'>
                     <InputField
-                        id='DeletePassword'
+                        id='delete_password'
                         label='Password'
                         type='password'
                         value={deleteData.password}
@@ -164,24 +164,25 @@ export default function Profile({ auth }) {
                         autoComplete='current-password'
                     />
 
-                    <div className='mt-2 flex justify-end gap-2'>
-                        <button
+                    {deleteErrors.password && (
+                        <p className='text-xs text-red-500'>{deleteErrors.password}</p>
+                    )}
+
+                    <div className='flex justify-end gap-2'>
+                        <Button
                             type='button'
                             onClick={() => setDeleteOpen(false)}
-                            className='rounded-lg border px-4 py-2'
+                            variant='secondary'
                         >
                             キャンセル
-                        </button>
+                        </Button>
 
-                        <button
-                            disabled={deleting}
-                            className='rounded-lg bg-red-600 px-4 py-2 text-white hover:bg-red-700 disabled:opacity-50'
-                        >
-                            削除する
-                        </button>
+                        <Button type='submit' variant='danger' disabled={deleting}>
+                            削除
+                        </Button>
                     </div>
                 </form>
             </Modal>
-        </AuthCard>
+        </div>
     );
 }
