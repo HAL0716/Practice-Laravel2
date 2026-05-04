@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect()->route(Auth::check() ? 'profile' : 'login');
+    return redirect()->route(Auth::check() ? 'posts' : 'login');
 });
 
 Route::middleware('auth')->group(function () {
