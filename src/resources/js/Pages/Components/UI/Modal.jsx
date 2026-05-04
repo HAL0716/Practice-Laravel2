@@ -26,6 +26,9 @@ export default function Modal({ open, onClose, title, children }) {
 
             {/* モーダル本体 */}
             <div
+                role='dialog'
+                aria-modal='true'
+                aria-labelledby='modal-title'
                 className='relative z-10 w-full max-w-md rounded-xl bg-white p-6 shadow-lg'
                 onClick={(e) => e.stopPropagation()} // 内部クリックで閉じないようにする
             >
